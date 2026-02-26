@@ -80,3 +80,63 @@ const pedodoServico: PedidoServico = {
     urgente: true
 }
 
+const existeCantina: boolean = true;
+const cantinaTemCafe = false;
+const existeEscComCAfe = true;
+
+if (!existeCantina) { // ! = nao, existeCAntina (true ou false) 
+    if (cantinaTemCafe) {
+        console.log("toma cafe")
+    } else {
+        console.log("traze cantina nha cafe ")
+    }
+} else if (existeEscComCAfe) {
+    console.log("toma cafe")
+}
+
+function pedirOrcamento() {
+    if (!prestador_servico.ativo) {
+        console.log("Prestador não está ativo")
+        return res.status(400).send("prestador inativo")
+    }
+
+    if (!servico.valido) {
+        return res.status(404).send("serico ka eh valido")
+    }
+
+    if (!pedodoServico.nome) {
+        console.log("nome do servico eh obrigatorio")
+        return res.status(400).send("nome do servico eh obrigatorio")
+    }
+
+    if (idade) {
+        console.log("pode beber")
+    } else {
+        console.log("nao pode beber")
+    }
+
+    // ciclos
+    // for, while, do ... while
+    let iterador: number = 0
+    const pedidosServico = [{ servioA }, { servicoB }, { servicoC }]
+
+    while (iterador === pedidosServico.length) {
+        iterador++
+    }
+
+    do {
+        servico = pedidosServico[iterador]
+        iterador++
+    } while (iterador === pedidosServico.length)
+
+    for (let i = 0; i < pedidosServico.length; i++) {
+        servico = pedidosServico[i]
+    }
+}
+
+interface ServicoType {
+    nome: string,
+    precoHora: number
+}
+
+let catalogoServicos: ServicoType[] = []
