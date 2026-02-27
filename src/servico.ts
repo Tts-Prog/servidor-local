@@ -1,19 +1,7 @@
 
-interface ResponseType {
-    status: boolean,
-    message: string,
-    data: ServicoType | null,
-}
+import { type ResponseType, type ServicoType } from "./utils/types.js"
 
-interface ServicoType {
-    nome: string,
-    precoHora: number
-    categoria: string
-    minimoDescontado: number
-    percentagemDesconto?: number
-}
-
-let catalogoServicos: ServicoType[] = []
+export let catalogoServicos: ServicoType[] = []
 
 // adicionar um serviço novo
 export function adicionarServico(novoServico: ServicoType): ResponseType {

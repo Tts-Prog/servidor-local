@@ -1,5 +1,6 @@
 import express, { type Request, type Response } from "express"
 import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js"
+import { calcularOrcamento, selecionarServicos } from "./orcamento.js"
 
 const app = express()
 app.use(express.json())
@@ -54,6 +55,23 @@ app.get("/obter-servico", (req: Request, res: Response) => {
   }
 })
 
+// rota para selecionar servicos
+app.post("/selecionar-servico", (req: Request, res: Response) => {
+  const { nome } = req.body
+
+  const selecinarServicoResponse = selecionarServicos(nome as string)
+
+  res.json(selecinarServicoResponse)
+})
+
+// rota para calcular orcamento
+app.post("/calcular-orcamento", (req: Request, res: Response) => {
+  const { pedido } = req.body
+
+  const calcularOrcamentoresponse = calcularOrcamento(pedido)
+
+  res.json(calcularOrcamentoresponse)
+})
 
 app.listen(8080, () => {
   console.log("Server running on port 8080")
