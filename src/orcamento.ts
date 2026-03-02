@@ -1,11 +1,14 @@
 import { catalogoServicos } from "./servico.js"
-import { type PedidoServicoType, type ServicoType } from "./utils/types.js"
+import { type PedidoServicoType, type PrestadorType, type ServicoType } from "./utils/types.js"
+
 
 const taxaUrgencia: number = 0.3
 const minimoParaDesconto: number = 100
 const percentagemDesconto: number = 0.1
 
 const servicosSelecionados: ServicoType[] = []
+const prestadoresDeServico: PrestadorType[] = []
+const prestadoresSelecionados: PrestadorType[] = []
 
 // funcao para selecionar servicos e horasEstimadas
 export function selecionarServicos(nome: string) {
@@ -16,6 +19,29 @@ export function selecionarServicos(nome: string) {
         }
     }
     return false
+}
+
+// fucnao para criar prestadores de servico
+export function criarPrestadoresDeServico(novoPrestador: PrestadorType) {
+    // verificar se o prestador ja esta no array
+    prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
+        if (prestadorExistente.nome === novoPrestador.nome) {
+            // se o prestador ja existir, retorna uma mensagem de erro
+            return {
+                status: false,
+                message: "Ja existe um prestador de servico com esse nome",
+                data: null
+            }
+        }
+    })
+
+    // se o prestador nao existir, adicionamos o novo prestador
+    prestadoresDeServico.push(novoPrestador)
+    return {
+        status: true,
+        message: "Prestador de servico adicionado com sucesso",
+        data: novoPrestador
+    }
 }
 
 // funcao para calcular o orcamento
