@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from "express"
 import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js"
-import { calcularOrcamento, selecionarServicos } from "./orcamento.js"
+import { apagarPrestadorDeServico, calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, listarPrestadoresDeServico, selecionarPrestadoresDeServico, selecionarServicos } from "./orcamento.js"
 
 const app = express()
 app.use(express.json())
@@ -74,6 +74,56 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
     message: "Orcamento calculado com sucesso",
     orcamentoTotal: calcularOrcamentoresponse
   })
+})
+
+// rota para selecionar prestador de servico
+app.post("/selecionar-prestador", (req: Request, res: Response) => {
+  const { nomeDePrestador } = req.body
+
+  const selecionaPrestadorResponse = selecionarPrestadoresDeServico(nomeDePrestador as string)
+
+  res.json({
+    status: selecionaPrestadorResponse,
+    message: "Prestador de servico selecionado com sucesso"
+  })
+})
+
+// rota para criar prestadores de servico 
+app.post("/criar-prestador", (req: Request, res: Response) => {
+  // pegar o corpo de requisicao com os dados do novo prestador
+  const novoPrestador = req.body
+
+  const criarPrestadorResponse = criarPrestadoresDeServico(novoPrestador)
+
+  res.json(criarPrestadorResponse)
+})
+
+app.get("/listar-prestadores", (req: Request, res: Response) => {
+  const listPrestadorResponse = listarPrestadoresDeServico()
+
+  res.json(listPrestadorResponse)
+})
+
+app.put("/editar-prestador", (req: Request, res: Response) => {
+  const { nomeDoPrestador, novosDadosDoPrestador } = req.body
+
+  const editarPrestadorResponse = editarPrestadorDeServico(nomeDoPrestador as string, novosDadosDoPrestador)
+
+  res.json(editarPrestadorResponse)
+})
+
+app.delete("/apagar-prestador", (req: Request, res: Response) => {
+  const { nomeDoPrestador } = req.query
+
+  if (nomeDoPrestador) {
+    const apagarPrestadorResponse = apagarPrestadorDeServico(nomeDoPrestador as string)
+
+    res.json(apagarPrestadorResponse)
+  } else {
+    res.json({
+      message: "Nome do prestador eh obrigatorio"
+    })
+  }
 })
 
 app.listen(8080, () => {
