@@ -1,6 +1,9 @@
 import express, { type Request, type Response } from "express"
 import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js"
 import { apagarPrestadorDeServico, calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, listarPrestadoresDeServico, selecionarPrestadoresDeServico, selecionarServicos } from "./orcamento.js"
+import { createUser, getUserById, getUsers } from "./users.js"
+import type { UserType } from "./utils/types.js"
+
 
 const app = express()
 app.use(express.json())
@@ -126,6 +129,83 @@ app.delete("/apagar-prestador", (req: Request, res: Response) => {
   }
 })
 
+// selecionar todos os utilizadores presentes na base de dados 
+app.get("/get-users", async (req: Request, res: Response) => {
+  const getUsersResponse = await getUsers()
+
+  res.json(getUsersResponse);
+})
+
+// selecionar um utilizador por id
+app.get("/get-user-by-id", async (req: Request, res: Response) => {
+  const { id } = req.query
+
+  if (id) {
+    const getUserByIdResponse = await getUserById(id as string)
+
+    if (!getUserByIdResponse) {
+      res.status(404).json({
+        status: "error",
+        message: "Utilizador nao encontrado",
+        data: null
+      })
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Utilizador encontrado",
+      data: getUserByIdResponse
+    })
+  } else {
+    res.status(400).json({
+      status: "error",
+      message: "Id eh obrigatorio",
+      data: null
+    })
+  }
+})
+
+app.post("/create-user", async (req: Request, res: Response) => {
+  const user: UserType = req.body
+
+  if (!user) {
+    res.status(400).json({
+      status: "error",
+      message: "Dados de utilizador invalidos",
+      data: null
+    })
+  }
+
+  console.log(user)
+
+  const createUserResponse = await createUser(user)
+
+  res.json(createUserResponse)
+})
+
+
+/*
+create user example 
+
+{
+  id: "sbibsiudcbwqiduw"
+    "nome": "Tiago Soares",
+    "email": "tiago@tiago.com",
+    "password": "tiago",
+    "numero_identificacao": "123456789",
+    "data_nascimento": "2000-01-01",
+    "telefone": "123456789",
+    "pais": "Portugal",
+    "localidade": "Porto",
+    "enabled": true,
+    "created_at": "2026-03-12T12:44:31.000Z",
+    "updated_at": "2026-03-12T12:44:31.000Z"
+}
+
+*/
+
 app.listen(8080, () => {
   console.log("Server running on port 8080")
+
+
 })

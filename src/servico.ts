@@ -65,3 +65,5 @@ export function obterServico(nome: string): ServicoType | null {
     }
     return null
 }
+
+
