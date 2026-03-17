@@ -1,5 +1,6 @@
 
-import { type ResponseType, type ServicoType } from "./utils/types.js"
+import db from "./lib/db.js";
+import { type ResponseType, type ServicoDBType, type ServicoType } from "./utils/types.js"
 
 export let catalogoServicos: ServicoType[] = []
 
@@ -66,4 +67,58 @@ export function obterServico(nome: string): ServicoType | null {
     return null
 }
 
+export async function addServicesToDB(newService: ServicoDBType) {
+    console.log({ newService })
 
+    try {
+
+        const query = `INSERT INTO tbl_servicos VALUES (?, ?, ?, ?, ?, ?, ?)`
+
+        const values = [
+            null,
+            newService.nome,
+            newService.descricao,
+            newService.categoria,
+            newService.enabled,
+            new Date(),
+            new Date()
+        ]
+
+        const rows = await db.execute(query, values)
+
+        return rows
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+export async function getServiceById(id: string) {
+    try {
+        const query = `SELECT * FROM tbl_servicos WHERE id = ?`
+
+        const value = [id]
+
+        const rows = await db.execute(query, value)
+
+        return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+export async function getAllServices() {
+    try {
+        const query = `SELECT * FROM tbl_servicos`
+
+        const rows = await db.execute(query)
+
+        return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}

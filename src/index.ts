@@ -1,8 +1,8 @@
 import express, { type Request, type Response } from "express"
-import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js"
+import { addServicesToDB, adicionarServico, apagarServico, getAllServices, getServiceById, listarServicos, obterServico } from "./servico.js"
 import { apagarPrestadorDeServico, calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, listarPrestadoresDeServico, selecionarPrestadoresDeServico, selecionarServicos } from "./orcamento.js"
 import { createUser, getUserById, getUsers } from "./users.js"
-import type { UserType } from "./utils/types.js"
+import type { ServicoDBType, UserType } from "./utils/types.js"
 
 
 const app = express()
@@ -183,29 +183,82 @@ app.post("/create-user", async (req: Request, res: Response) => {
   res.json(createUserResponse)
 })
 
+app.post("/create-service", async (req: Request, res: Response) => {
+  const newService: ServicoDBType = req.body
 
-/*
-create user example 
+  if (!newService) {
+    return res.status(400).json({
+      status: "error",
+      message: "Dados de servico invalidos",
+      data: null
+    })
+  }
 
-{
-  id: "sbibsiudcbwqiduw"
-    "nome": "Tiago Soares",
-    "email": "tiago@tiago.com",
-    "password": "tiago",
-    "numero_identificacao": "123456789",
-    "data_nascimento": "2000-01-01",
-    "telefone": "123456789",
-    "pais": "Portugal",
-    "localidade": "Porto",
-    "enabled": true,
-    "created_at": "2026-03-12T12:44:31.000Z",
-    "updated_at": "2026-03-12T12:44:31.000Z"
-}
+  console.log(newService)
 
-*/
+  const createServiceResponse = await addServicesToDB(newService)
+
+  if (createServiceResponse === null) {
+    return res.status(400).json({
+      status: "error",
+      message: "Erro ao criar servico",
+      data: null
+    })
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Servico criado com sucesso",
+    data: createServiceResponse
+  })
+})
+
+app.get("/get-service-by-id/:id", async (req: Request, res: Response) => {
+  const { id } = req.params
+
+  if (!id) {
+    return res.status(400).json({
+      status: "error",
+      message: "ID obrigatorio",
+      data: null
+    })
+  }
+
+  const getServiceByIdResponse = await getServiceById(id as string)
+
+  if (!getServiceByIdResponse) {
+    return res.status(404).json({
+      status: "error",
+      message: "Servico nao encontrado",
+      data: null
+    })
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Servico encontrado",
+    data: getServiceByIdResponse
+  })
+})
+
+app.get("/get-all-services", async (req: Request, res: Response) => {
+  const getAllServicesResponse = await getAllServices()
+
+  if (!getAllServicesResponse) {
+    return res.status(400).json({
+      status: "error",
+      message: "Erro ao selecionar servicos",
+      data: null
+    })
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Servicos encontrados",
+    data: getAllServicesResponse
+  })
+})
 
 app.listen(8080, () => {
   console.log("Server running on port 8080")
-
-
 })
