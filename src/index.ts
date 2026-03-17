@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from "express"
-import { addServicesToDB, adicionarServico, apagarServico, getAllServices, getServiceById, listarServicos, obterServico } from "./servico.js"
+import { addServicesToDB, adicionarServico, apagarServico, deleteService, getAllServices, getServiceById, listarServicos, obterServico, updateService } from "./servico.js"
 import { apagarPrestadorDeServico, calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, listarPrestadoresDeServico, selecionarPrestadoresDeServico, selecionarServicos } from "./orcamento.js"
 import { createUser, getUserById, getUsers } from "./users.js"
 import type { ServicoDBType, UserType } from "./utils/types.js"
@@ -259,6 +259,73 @@ app.get("/get-all-services", async (req: Request, res: Response) => {
   })
 })
 
+app.put("/update-service-by-id/:id", async (req: Request, res: Response) => {
+  const { id } = req.params
+
+  const updatedService: ServicoDBType = req.body
+
+  if (!id) {
+    return res.status(400).json({
+      status: "error",
+      message: "ID obrigatorio",
+      data: null
+    })
+  }
+
+  if (!updatedService) {
+    return res.status(400).json({
+      status: "error",
+      message: "Dados de servico invalidos",
+      data: null
+    })
+  }
+
+  const updateServiceResponse = await updateService(id as string, updatedService)
+
+  if (!updateServiceResponse) {
+    return res.status(400).json({
+      status: "error",
+      message: "Erro ao atualizar servico",
+      data: null
+    })
+  }
+
+  return res.status(200).json({
+    status: "success",
+    message: "Servico atualizado com sucesso",
+    data: updateServiceResponse
+  })
+})
+
+app.delete("/delete-service-by-id/:id", async (req: Request, res: Response) => {
+  const { id } = req.params
+
+  if (!id) {
+    return res.status(400).json({
+      status: "error",
+      message: "ID obrigatorio",
+      data: null
+    })
+  }
+
+  const deleteServiceResponse = await deleteService(id as string)
+
+  if (!deleteServiceResponse) {
+    return res.status(400).json({
+      status: "error",
+      message: "Erro ao apagar servico",
+      data: null
+    })
+  }
+
+  return res.status(200).json({
+    status: "success",
+    message: "Servico apagado com sucesso",
+    data: deleteServiceResponse
+  })
+})
+
 app.listen(8080, () => {
   console.log("Server running on port 8080")
 })
+

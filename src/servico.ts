@@ -113,10 +113,59 @@ export async function getAllServices() {
     try {
         const query = `SELECT * FROM tbl_servicos`
 
-        const rows = await db.execute(query)
+        const [rows] = await db.execute(query)
 
-        return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+        //return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
 
+        return rows
+
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+// update de dados
+export async function updateService(id: string, updatedService: ServicoDBType) {
+    try {
+        const query = `UPDATE tbl_servicos 
+                        SET 
+                            nome=?,
+                            descricao=?,
+                            categoria=?,
+                            enabled=?,
+                            updated_at=?
+                        WHERE
+                            id=?
+                        ;`
+
+        const values = [
+            updatedService.nome,
+            updatedService.descricao,
+            updatedService.categoria,
+            updatedService.enabled,
+            new Date(),
+            id
+        ]
+
+        const rows = await db.execute(query, values)
+
+        return rows
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+export async function deleteService(id: string) {
+    try {
+        const query = `DELETE FROM tbl_servicos WHERE id = ?`
+
+        const value = [id]
+
+        const rows = await db.execute(query, value)
+
+        return rows
     } catch (error) {
         console.log(error)
         return null
