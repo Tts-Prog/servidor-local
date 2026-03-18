@@ -1,5 +1,6 @@
 import db from "./lib/db.js"
 import type { UserType } from "./utils/types.js"
+import { generateUUID } from "./utils/uuid.js"
 
 
 export async function getUsers() {
@@ -34,7 +35,7 @@ export async function createUser(user: UserType) {
             `INSERT INTO tbl_utilizadores 
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                user.id,
+                generateUUID(),
                 user.nome,
                 user.numero_identificacao,
                 user.data_nascimento,
@@ -55,6 +56,68 @@ export async function createUser(user: UserType) {
         return null
     }
 }
+
+export async function updateUser(id: string, updatedUser: UserType) {
+    try {
+        const query = `
+            UPDATE tbl_utilizadores
+            SET 
+                nome = ?,
+                numero_identificacao = ?,
+                data_nascimento = ?,
+                email = ?,
+                telefone = ?,
+                pais = ?,
+                localidade = ?,
+                password = ?,
+                enabled = ?,
+                updated_at = ?
+            WHERE id = ?
+       `
+
+        const values = [
+            updatedUser.nome,
+            updatedUser.numero_identificacao,
+            updatedUser.data_nascimento,
+            updatedUser.email,
+            updatedUser.telefone,
+            updatedUser.pais,
+            updatedUser.localidade,
+            updatedUser.password,
+            updatedUser.enabled,
+            new Date(),
+            id
+        ]
+
+        const rows = await db.execute(query, values)
+
+        return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+export async function deleteUser(id: string) {
+    try {
+        const query = `
+            DELETE FROM tbl_utilizadores
+            WHERE id = ?
+        `
+
+        const values = [id]
+
+        const rows: any = await db.execute(query, values)
+
+        return rows[0].affectedRows === 1 ? null : rows[0]
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+
 
 
 

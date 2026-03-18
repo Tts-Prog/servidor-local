@@ -91,6 +91,27 @@ export async function addServicesToDB(newService: ServicoDBType) {
         console.log(error)
         return null
     }
+
+    /* json to create services
+    {
+        "nome": "string",
+        "descricao": "string",
+        "categoria": "string",
+        "enabled": true,
+        "created_at": "string",
+        "updated_at": "string"
+    }
+
+    json to update service
+    {
+        "id": "string",
+        "nome": "string",
+        "descricao": "string",
+        "categoria": "string",
+        "enabled": true,
+        "updated_at": "string"
+}
+    */
 }
 
 export async function getServiceById(id: string) {
@@ -113,11 +134,9 @@ export async function getAllServices() {
     try {
         const query = `SELECT * FROM tbl_servicos`
 
-        const [rows] = await db.execute(query)
+        const rows = await db.execute(query)
 
-        //return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
-
-        return rows
+        return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
 
     } catch (error) {
         console.log(error)
@@ -163,11 +182,12 @@ export async function deleteService(id: string) {
 
         const value = [id]
 
-        const rows = await db.execute(query, value)
+        const rows: any = await db.execute(query, value)
 
-        return rows
+        return rows[0]?.affectedRows === 0 ? null : rows
     } catch (error) {
         console.log(error)
         return null
     }
 }
+

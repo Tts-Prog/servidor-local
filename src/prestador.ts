@@ -30,29 +30,3 @@ class Prestador {
         this.nome = novoNome
     }
 }
-
-const prestador1 = new Prestador(
-    "Tiago",
-    100,
-    "Desenvolvidor de software",
-    1000,
-    0.1,
-    0.3
-)
-
-console.log(prestador1.precoHora) // preco hora do prestador, 100
-
-prestador1.alterarPrecoHora(150)
-prestador1.alterarNome("Tiago Soares")
-
-console.log(prestador1.precoHora) // preco hora do prestador, 150
-console.log(prestador1.nome) // nome do prestador, Tiago Soares
-
-/* 
-    nome: "Tiago"
-    precoHora: 100
-    profissao: "Desenvolvidor de software"
-    minimoParaDesconto: 1000
-    percentagemDesconto: 0.1
-    taxaUrgencia: 0.3
-*/
