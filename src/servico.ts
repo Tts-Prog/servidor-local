@@ -67,6 +67,8 @@ export function obterServico(nome: string): ServicoType | null {
     return null
 }
 
+
+// apartir daqui servicos
 export async function addServicesToDB(newService: ServicoDBType) {
     console.log({ newService })
 
