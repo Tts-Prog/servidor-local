@@ -1,11 +1,16 @@
 import { Router } from "express";
+import { UserController } from "../controllers/users.controller.js";
 
 const router = Router()
 
-router.post("/create", (req, res) => {
-    return res.json({
-        message: "User created"
-    })
-})
+router.post("/create", UserController.create)
 
-export default router
+router.get("/", UserController.getAll)
+
+router.get("/:id", UserController.getById)
+
+router.put("/:id", UserController.update)
+
+router.delete("/:id", UserController.delete)
+
+export { router }
