@@ -1,0 +1,50 @@
+# schema/servico.yaml
+#  id: string,
+#  nome: string,
+#  descricao: string,
+#  categoria: string,
+#  enabled: boolean,
+#  created_at: string,
+#  updated_at: string
+
+components:
+  schemas:
+    # shema principal de servico
+    Servico:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "Serviço de Limpeza"
+        descricao:
+          type: string
+          example: "Serviço de limpeza profissional para residências e empresas."
+        categoria:
+          type: string
+          example: "Limpeza"
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+
+    # schema generico de resposta de erro
+    ResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao buscar serviços"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          properties: null
