@@ -1,0 +1,163 @@
+# create: "/create",
+# getAll: "/",
+# getById: "/get-by-id/:id",
+# update: "/update/:id",
+# delete: "/delete/:id"
+
+paths:
+  /orcamento:
+    get:
+      summary: Buscar todos os orçamentos
+      tags:
+        - Orcamento
+      responses:
+        "200":
+          description: Orçamentos buscados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de orçamento inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao buscar orçamentos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+  /orcamento/create:
+    post:
+      summary: Criar um novo orçamento
+      tags:
+        - Orcamento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrcamento"
+      responses:
+        "200":
+          description: Orçamento criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de orçamento inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao criar orçamento
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /orcamento/get-by-id/{id}:
+    get:
+      summary: Buscar um orçamento por ID
+      tags:
+        - Orcamento
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      responses:
+        "200":
+          description: Orçamento encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de orçamento inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao buscar orçamento
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /orcamento/update/{id}:
+    put:
+      summary: Atualizar um orçamento
+      tags:
+        - Orcamento
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrcamento"
+      responses:
+        "200":
+          description: Orçamento atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de orçamento inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao atualizar orçamento
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /orcamento/delete/{id}:
+    delete:
+      summary: Apagar um orçamento
+      tags:
+        - Orcamento
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      responses:
+        "200":
+          description: Orçamento apagado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de orçamento inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao apagar orçamento
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"

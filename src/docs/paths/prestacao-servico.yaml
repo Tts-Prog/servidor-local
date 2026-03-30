@@ -1,0 +1,169 @@
+# create: "/create",
+# getAll: "/",
+# getById: "/get-by-id/:id",
+# update: "/update/:id",
+# delete: "/delete/:id"
+
+paths:
+  /prestacao-servico:
+    get:
+      summary: Buscar todas as prestações de serviço
+      tags:
+        - Prestação de Serviço
+      description: Retorna uma lista de todas as prestações de serviço
+      responses:
+        "200":
+          description: Prestações de serviço encontradas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de prestação de serviço inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao buscar prestações de serviço
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /prestacao-servico/create:
+    post:
+      summary: Criar uma nova prestação de serviço
+      tags:
+        - Prestação de Serviço
+      description: Cria uma nova prestação de serviço
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrestacaoServico"
+      responses:
+        "200":
+          description: Prestação de serviço criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de prestação de serviço inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao criar prestação de serviço
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /prestacao-servico/get-by-id/{id}:
+    get:
+      summary: Buscar uma prestação de serviço por ID
+      tags:
+        - Prestação de Serviço
+      description: Retorna uma prestação de serviço por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      responses:
+        "200":
+          description: Prestação de serviço encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de prestação de serviço inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao buscar prestação de serviço
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /prestacao-servico/update/{id}:
+    put:
+      summary: Atualizar uma prestação de serviço
+      tags:
+        - Prestação de Serviço
+      description: Atualiza uma prestação de serviço
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePrestacaoServico"
+      responses:
+        "200":
+          description: Prestação de serviço atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de prestação de serviço inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao atualizar prestação de serviço
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /prestacao-servico/delete/{id}:
+    delete:
+      summary: Deletar uma prestação de serviço
+      tags:
+        - Prestação de Serviço
+      description: Deleta uma prestação de serviço
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      responses:
+        "200":
+          description: Prestação de serviço deletada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de prestação de serviço inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao deletar prestação de serviço
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"

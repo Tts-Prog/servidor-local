@@ -1,0 +1,246 @@
+# create: "/create",
+# getAll: "/",
+# getById: "/:id",
+# update: "/update/:id",
+# delete: "/delete/:id"
+
+paths:
+  /users:
+    get:
+      summary: Listar todos os usuários
+      tags:
+        - Users
+      description: Retorna uma lista de todos os usuários
+      responses:
+        "200":
+          description: Lista de usuários
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "404":
+          description: "Nenhum usuário encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+  /users/create:
+    post:
+      summary: Criar um novo usuário
+      tags:
+        - Users
+      description: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUser"
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseSuccess"
+        "400":
+          description: "Erro ao criar usuário"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+
+  /users/{id}:
+    get:
+      summary: Buscar um usuário por ID
+      tags:
+        - Users
+      description: Retorna um usuário por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do usuário
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuário encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseSuccess"
+        "404":
+          description: "Usuário não encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+        "400":
+          description: "Erro ao buscar usuário"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+
+  /users/update/{id}:
+    put:
+      summary: Atualizar um usuário
+      tags:
+        - Users
+      description: Atualiza um usuário
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do usuário
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUser"
+      responses:
+        "200":
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseSuccess"
+        "404":
+          description: "Usuário não encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+        "400":
+          description: "Erro ao atualizar usuário"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+
+  /users/reset-password/{id}:
+    put:
+      summary: Resetar senha de um usuário
+      tags:
+        - Users
+      description: Reseta a senha de um usuário
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do usuário
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPassword"
+      responses:
+        "200":
+          description: Senha resetada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseSuccess"
+        "404":
+          description: "Usuário não encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+        "400":
+          description: "Erro ao resetar senha"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+
+  /users/delete/{id}:
+    delete:
+      summary: Deletar um usuário
+      tags:
+        - Users
+      description: Deleta um usuário
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do usuário
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuário deletado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseSuccess"
+        "404":
+          description: "Usuário não encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+        "400":
+          description: "Erro ao deletar usuário"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+  /users/login:
+    post:
+      summary: Login de um usuário
+      tags:
+        - Users
+      description: Faz login de um usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUser"
+      responses:
+        "200":
+          description: Usuário logado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseSuccess"
+        "404":
+          description: "Usuário não encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"
+        "400":
+          description: "Erro ao logar usuário"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponseError"

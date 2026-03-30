@@ -35,6 +35,37 @@ components:
           type: string
           example: "2022-01-01T00:00:00.000Z"
 
+    # schema para criar um novo servico
+    CreateService:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Servico de Limpeza
+        descricao:
+          type: string
+          example: Servico de limpeza profissional para residências e empresas.
+        categoria:
+          type: string
+          example: Limpeza
+        enabled:
+          type: boolean
+          example: true
+
+    # schema generico para sucesso
+    ResponseSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Serviço criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/components/schemas/Servico"
+
     # schema generico de resposta de erro
     ResponseError:
       type: object

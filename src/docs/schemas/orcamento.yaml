@@ -1,0 +1,69 @@
+# id: string,
+# total: number,
+# id_utilizadores: string,
+# enabled: boolean,
+# created_at: string,
+# updated_at: string
+
+components:
+  schemas:
+    Orcamento:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        total:
+          type: number
+          example: 100
+        id_utilizadores:
+          type: string
+          example: "1"
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+
+    CreateOrcamento:
+      type: object
+      properties:
+        total:
+          type: number
+          example: 100
+        id_utilizadores:
+          type: string
+          example: "1"
+        enabled:
+          type: boolean
+          example: true
+
+    ResponseSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Orcamento criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/components/schemas/Orcamento"
+
+    ResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao buscar orcamentos"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          properties: null

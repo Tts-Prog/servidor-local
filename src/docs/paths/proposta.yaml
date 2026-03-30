@@ -1,0 +1,169 @@
+# create: "/create",
+# getAll: "/",
+# getById: "/:id",
+# update: "/update/:id",
+# delete: "/delete/:id"
+
+paths:
+  /proposta:
+    get:
+      summary: Buscar todas as propostas
+      tags:
+        - Proposta
+      description: Retorna uma lista de todas as propostas
+      responses:
+        "200":
+          description: Propostas encontradas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de proposta inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao buscar propostas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /proposta/create:
+    post:
+      summary: Criar uma nova proposta
+      tags:
+        - Proposta
+      description: Cria uma nova proposta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProposta"
+      responses:
+        "200":
+          description: Proposta criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de proposta inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao criar proposta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /proposta/get-by-id/{id}:
+    get:
+      summary: Buscar uma proposta por ID
+      tags:
+        - Proposta
+      description: Retorna uma proposta por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      responses:
+        "200":
+          description: Proposta encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de proposta inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao buscar proposta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /proposta/update/{id}:
+    put:
+      summary: Atualizar uma proposta
+      tags:
+        - Proposta
+      description: Atualiza uma proposta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProposta"
+      responses:
+        "200":
+          description: Proposta atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de proposta inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao atualizar proposta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /proposta/delete/{id}:
+    delete:
+      summary: Deletar uma proposta
+      tags:
+        - Proposta
+      description: Deleta uma proposta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      responses:
+        "200":
+          description: Proposta deletada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de proposta inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao deletar proposta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
