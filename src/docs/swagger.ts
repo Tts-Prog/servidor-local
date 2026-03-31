@@ -14,6 +14,20 @@ const options: swaggerJsdoc.Options = {
                 url: 'http://localhost:8080',
                 description: 'dev',
             }
+        ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT"
+                }
+            }
+        },
+        security: [
+            {
+                bearerAuth: []
+            }
         ]
     },
     apis: [

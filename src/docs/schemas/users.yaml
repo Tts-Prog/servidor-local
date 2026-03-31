@@ -156,4 +156,4 @@ components:
           example: true
         data:
           type: object
-          $ref: "#/components/schemas/User"
+          $ref: "#/components/schemas/Users"

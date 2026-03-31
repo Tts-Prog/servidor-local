@@ -118,7 +118,42 @@ export const UserController = {
             })
         }
 
+        const userData: UserType | null = await UserModel.getByEmail(email as string)
 
+        if (!userData) {
+            return res.status(404).json({
+                status: "error",
+                message: "Nao Existe nenhuma conta com este email.",
+                data: null
+            })
+        }
+
+        const isPasswordValid = await comparePassword(password, userData.password)
+
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                status: "error",
+                message: "Credenciais invalidos",
+                data: null
+            })
+        }
+
+        const payload = {
+            id: userData.id,
+            email: userData.email,
+            nome: userData.nome
+        }
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "1h" })
+
+        return res.status(200).json({
+            status: "success",
+            message: "Login realizado com sucesso",
+            data: {
+                token,
+                user: payload
+            }
+        })
     },
 
     async resetPassword(req: Request, res: Response) {
