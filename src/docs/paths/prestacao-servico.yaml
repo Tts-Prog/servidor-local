@@ -99,6 +99,8 @@ paths:
   /prestacao-servico/update/{id}:
     put:
       summary: Atualizar uma prestação de serviço
+      security:
+        - bearerAuth: []
       tags:
         - Prestação de Serviço
       description: Atualiza uma prestação de serviço
