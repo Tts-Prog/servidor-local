@@ -1,6 +1,7 @@
 import type { Request, Response } from "express"
 import { PropostaModel } from "../models/proposta.model.js"
 import type { PropostaDBType } from "../utils/types.js"
+import { PrestacaoServicoModel } from "../models/prestacao-servico.model.js"
 
 
 export const PropostaController = {
@@ -72,7 +73,43 @@ export const PropostaController = {
             console.log(err)
             return res.status(500).json({ message: "Erro ao deletar proposta" })
         }
-    }
+    },
+
+    async getByPrestacaoServico(req: Request, res: Response) {
+        const { id } = req.params
+        try {
+            const propostaResponse = await PropostaModel.get(id as string)
+
+            if (!propostaResponse) return res.status(400).json({ message: "Erro ao buscar proposta" })
+
+            return res.status(200).json({ message: "Proposta encontrada com sucesso", propostaResponse })
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Erro ao buscar proposta" })
+        }
+    },
+
+    async accept(req: Request, res: Response) {
+        const { id } = req.params
+        try {
+
+            const propostaAcceptanceResponse = await PropostaModel.acceptProposal(id as string)
+
+            // we should update prestacao servico fields once a accepted proposal based on the prestacao servico that has the orcamento id
+            //fetch proposal to get id_prestacao_servico as proposalResponse does not fetch 
+            //const propostaResponse = await PropostaModel.get(id as string)
+
+            // check utils/types.ts
+            //const prestacaoServicoResponse = await PrestacaoServicoModel.update(propostaResponse?.id_prestacao_servico as string, propostaResponse)
+
+            if (!propostaAcceptanceResponse) return res.status(400).json({ message: "Erro ao aceitar proposta" })
+
+            return res.status(200).json({ message: "Proposta aceite com sucesso", propostaAcceptanceResponse })
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({ message: "Erro ao aceitar proposta" })
+        }
+    },
 }
 
 
