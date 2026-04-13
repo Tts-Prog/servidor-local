@@ -6,7 +6,8 @@ const PrestacaoServicoRoute = {
     getAll: "/",
     getById: "/get-by-id/:id",
     update: "/update/:id",
-    delete: "/delete/:id"
+    delete: "/delete/:id",
+    getAllPrestacaoServicoDetalhada: "/get-all-detalhado"
 }
 
 const router = Router()
@@ -16,5 +17,6 @@ router.get(PrestacaoServicoRoute.getAll, PrestacaoServicoController.getAll)
 router.get(PrestacaoServicoRoute.getById, PrestacaoServicoController.get)
 router.put(PrestacaoServicoRoute.update, PrestacaoServicoController.update)
 router.delete(PrestacaoServicoRoute.delete, PrestacaoServicoController.delete)
+router.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhada, PrestacaoServicoController.getAllPrestacaoServicoDetalhada)
 
 export { router }

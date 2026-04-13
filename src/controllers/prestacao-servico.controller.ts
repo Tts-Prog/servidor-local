@@ -141,5 +141,31 @@ export const PrestacaoServicoController = {
             message: "Prestacao de servico apagada com sucesso",
             data: deletePrestacaoServicoResponse
         })
+    },
+
+    async getAllPrestacaoServicoDetalhada(req: Request, res: Response) {
+        const { limit, offset } = req.query as { limit: string, offset: string }
+
+        let LIMIT = 10
+        let OFFSET = 0
+
+        if (limit && parseInt(limit) > 0) LIMIT = parseInt(limit)
+        if (offset && parseInt(offset) > 0) OFFSET = parseInt(offset)
+
+        const getAllPrestacaoServicosResponse = await PrestacaoServicoModel.getAllPrestacaoServicoDetalhada(LIMIT, OFFSET)
+
+        if (!getAllPrestacaoServicosResponse) {
+            return res.status(500).json({
+                status: "error",
+                message: "Erro ao buscar prestacoes de servico",
+                data: null
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Prestacoes de servico buscadas com sucesso",
+            data: getAllPrestacaoServicosResponse
+        })
     }
 }

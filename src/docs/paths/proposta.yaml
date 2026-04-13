@@ -167,3 +167,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
+
+  /proposta/accept/{id}:
+    put:
+      summary: Aceitar uma proposta
+      tags:
+        - Proposta
+      description: Aceita uma proposta
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "1"
+      responses:
+        "200":
+          description: Proposta aceita com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados de proposta inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "500":
+          description: Erro ao aceitar proposta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
