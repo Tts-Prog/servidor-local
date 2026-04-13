@@ -19,7 +19,7 @@ app.use("/orcamento", orcamentoRouter)
 app.use("/prestador", prestadorRouter)
 app.use("/users", userRouter)
 app.use("/proposta", propostaRouter)
-app.use("prestacao-servico", prestacaoServicoRouter)
+app.use("/prestacao-servico", prestacaoServicoRouter)
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 

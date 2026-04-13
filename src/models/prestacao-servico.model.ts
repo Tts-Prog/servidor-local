@@ -144,7 +144,7 @@ export const PrestacaoServicoModel = {
                     ps.created_at as data_pedido,
                     ps.urgente
                 FROM tbl_prestacao_servico ps
-                INNER JOIN tbl_utlizadores u ON ps.id_utilizador = u.id
+                INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
                 INNER JOIN tbl_servicos s ON ps.id_servico = s.id
                 ORDER BY ps.created_at DESC
                 LIMIT ? OFFSET ?

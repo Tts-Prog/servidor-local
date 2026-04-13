@@ -121,6 +121,18 @@ export interface PrestacaoServicoDetalhadoType {
     urgente: boolean
 }
 
+export interface ServicoDetalhadoType {
+    id: string,
+    nome: string,
+    descricao: string,
+    designacao_categoria: string,
+    icone_categoria: string,
+    id_empresa: string,
+    desginacao_empresa: string,
+    icone_empresa: string,
+    enabled: boolean
+}
+
 export interface ResponseType<T> {
     status: "success" | "error",
     message: string,
