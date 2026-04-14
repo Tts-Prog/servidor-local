@@ -122,7 +122,6 @@ export const ServiceModel = {
                 INNER JOIN tbl_empresa e ON e.id = s.id_empresa
                 LIMIT ? OFFSET ?
             `
-
             const values = [limit, offset]
 
             const [rows] = await db.execute<ServicoDetalhadoType[] & RowDataPacket[]>(query, values)
