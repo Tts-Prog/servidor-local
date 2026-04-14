@@ -107,10 +107,10 @@ export const ServiceModel = {
     async getAllServicoDetalhado(limit: number, offset: number): Promise<ServicoDetalhadoType[] | null> {
         try {
             const query = `
-                SELECT 
-                    s.id
-                    s.nome
-                    s.descricao
+                SELECT DISTINCT
+                    s.id as id_servico
+                    s.nome as servico_nome
+                    s.descricao as servico_descricao
                     c.designacao as designacao_categoria
                     c.icone as icone_categoria
                     e.id as id_empresa
@@ -119,7 +119,9 @@ export const ServiceModel = {
                     s.enabled
                 FROM tbl_servicos s
                 INNER JOIN tbl_categoria c ON c.id = s.id_categoria
-                INNER JOIN tbl_empresa e ON e.id = s.id_empresa
+                INNER JOIN tbl_prestacao_servico ps ON s.id = ps.id_servico
+                INNER JOIN tbl_empresa e ON e.id = ps.id_empresa
+                WHERE s.enabled = true
                 LIMIT ? OFFSET ?
             `
             const values = [limit, offset]
