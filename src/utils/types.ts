@@ -1,3 +1,27 @@
+export enum Role {
+    CLIENTE = "cliente",
+    ADMIN = "admin",
+    PRESTADOR = "prestador",
+    EMPRESA = "empresa"
+}
+
+export enum EstadoProposta {
+    PENDENTE = "pendente",
+    ACEITE = "aceite",
+    CANCELADO = "cancelado"
+}
+
+export enum EstadoPrestacaoServico {
+    PENDENTE = "pendente",
+    FINALIZADO = "finalizado",
+    EM_PROGRESSO = "em_progresso",
+    CANCELADO = "cancelado"
+}
+
+export enum TipoPrestador {
+    PARTICULAR = "particular",
+    EMPRESA = "empresa"
+}
 
 export interface PedidoServicoType {
     cliente: string;
@@ -33,10 +57,12 @@ export interface UserType {
     pais: string,
     localidade: string,
     password: string,
+    role: Role,
     enabled: boolean,
     created_at: string,
     updated_at: string
 }
+
 
 export interface ServicoDBType {
     id: string,
@@ -69,19 +95,6 @@ export interface OrcamentoDBType {
     updatedAt: string
 }
 
-export enum EstadoProposta {
-    PENDENTE = "pendente",
-    ACEITE = "aceite",
-    CANCELADO = "cancelado"
-}
-
-export enum EstadoPrestacaoServico {
-    PENDENTE = "pendente",
-    FINALIZADO = "finalizado",
-    EM_PROGRESSO = "em_progresso",
-    CANCELADO = "cancelado"
-}
-
 export interface PropostaDBType {
     id: string,
     idPrestacaoServico: string,
@@ -105,6 +118,8 @@ export interface PrestacaoServicoDBType {
     estado: EstadoPrestacaoServico,
     id_orcamento: string,
     id_utilizador: string,
+    id_empresa: string,
+    tipo_prestador: TipoPrestador,
     urgente: boolean,
     enabled: boolean,
     created_at: string,
@@ -137,4 +152,25 @@ export interface ResponseType<T> {
     status: "success" | "error",
     message: string,
     data: T | null
+}
+
+export interface CategoriaDBType {
+    id: string,
+    designacao: string,
+    icone: string,
+    created_at: string,
+    updated_at: string
+}
+
+export interface EmpresaDBType {
+    id: string,
+    designacao: string,
+    descricao: string
+    nif: string,
+    icone: string,
+    id_utilizador: string,
+    localizacao: string,
+    enabled: boolean,
+    created_at: string,
+    updated_at: string
 }
