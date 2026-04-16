@@ -1,6 +1,6 @@
 import type { Request, Response } from "express"
 import { PropostaModel } from "../models/proposta.model.js"
-import type { PropostaDBType } from "../utils/types.js"
+import { EstadoProposta, type PropostaDBType } from "../utils/types.js"
 import { PrestacaoServicoModel } from "../models/prestacao-servico.model.js"
 
 
@@ -49,6 +49,11 @@ export const PropostaController = {
     async update(req: Request, res: Response) {
         const { id } = req.params
         try {
+            const proposta = await PropostaModel.get(id as string)
+            if (!proposta) return res.status(400).json({ message: "Erro ao buscar proposta" })
+
+            if (proposta && proposta.estado !== EstadoProposta.PENDENTE) return res.status(400).json({ message: "Proposta ja foi aceite ou recusada" })
+
             const propostaData = req.body as PropostaDBType
             const propostaResponse = await PropostaModel.update(id as string, propostaData)
 

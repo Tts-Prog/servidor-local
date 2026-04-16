@@ -14,12 +14,18 @@ const ServiceRoute = {
 
 const router = Router()
 
-router.post(ServiceRoute.create, authorize([Role.ADMIN]), ServicoController.createServico)
 router.get(ServiceRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAll)
 router.get(ServiceRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.get)
+router.get(ServiceRoute.getAllDetailed, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAllServicoDetalhado)
+
+router.use(AuthMiddleware)
+
+router.post(ServiceRoute.create, authorize([Role.ADMIN]), ServicoController.createServico)
 router.put(ServiceRoute.update, authorize([Role.ADMIN]), ServicoController.update)
 router.delete(ServiceRoute.delete, authorize([Role.ADMIN]), ServicoController.delete)
-router.get(ServiceRoute.getAllDetailed, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAllServicoDetalhado)
+
+
+
 
 export { router }
 
