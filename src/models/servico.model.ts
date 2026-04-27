@@ -20,7 +20,11 @@ export const ServiceModel = {
 
             const rows = await db.execute(query, values)
 
-            return rows
+            // select last id
+            const queryLastId = `SELECT * FROM tbl_servicos ORDER BY id DESC LIMIT 1`
+            const [lastService] = await db.execute<ServicoDBType[] & RowDataPacket[]>(queryLastId)
+
+            return lastService[0] as ServicoDBType
         } catch (error) {
             console.log(error)
             return null
