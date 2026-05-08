@@ -1,18 +1,18 @@
-import type { RowDataPacket } from "mysql2"
+import type { ResultSetHeader, RowDataPacket } from "mysql2"
 import db from "../lib/db.js"
 import type { PrestacaoServicoByCategoriaType, PrestacaoServicoDBType, PrestacaoServicoDetalhadoType } from "../utils/types.js"
 import { generateUUID } from "../utils/uuid.js"
 
 
 export const PrestacaoServicoModel = {
-    async create(prestacaoServico: PrestacaoServicoDBType) {
+    async create(prestacaoServico: PrestacaoServicoDBType): Promise<PrestacaoServicoDBType | null> {
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<ResultSetHeader>(
                 `INSERT INTO tbl_prestacao_servico 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
                 [
-                    generateUUID(),
+                    null,
                     prestacaoServico.designacao,
                     prestacaoServico.subtotal,
                     prestacaoServico.horas_estimadas,
@@ -22,31 +22,67 @@ export const PrestacaoServicoModel = {
                     prestacaoServico.estado,
                     prestacaoServico.id_orcamento,
                     prestacaoServico.enabled,
-                    prestacaoServico.id_utilizador,
                     prestacaoServico.urgente,
                     new Date(),
-                    new Date()
+                    new Date(),
+                    prestacaoServico.id_empresa,
+                    prestacaoServico.tipo_prestador,
+                    prestacaoServico.id_utilizador
                 ]
             )
-            console.log({ rows })
-            return rows
+
+            /* 
+            data insert example  json format
+
+                {
+                    "designacao": "piso cerâmico",
+                    "subtotal": 1000,
+                    "horas_estimadas": 200,
+                    "id_prestador": "27acc54f-57cd-4b37-8c4a-be0a7bb5b3ac",
+                    "id_servico": "1",
+                    "preco_hora": 0,
+                    "estado": "pendente",
+                    "id_orcamento": "1",
+                    "enabled": true,
+                    "id_utilizador": "f3fd86fa-865f-41d7-8488-d434ed90d800",
+                    "urgente": true,
+                    "created_at": "2026-05-06 09:23:29",
+                    "updated_at": "2026-05-06 09:23:29",
+                    "id_empresa": "1",
+                    "tipo_prestador": "prestador"
+                }
+            */
+            /* 
+            Insert into returns 
+            {
+                fieldCount: 0,
+                affectedRows: 1,
+                insertId: 0,
+                info: '',
+                serverStatus: 2,
+                warningStatus: 0
+            } so the vlidation must be based on that
+            */
+
+            const newPrestacaoServico = await this.get(rows.insertId.toString())
+            return newPrestacaoServico
         } catch (err) {
             console.log(err)
             return null
         }
     },
 
-
-
-    async getAll() {
-        const [rows] = await db.execute("SELECT * FROM tbl_prestacao_servico")
+    async getAll(): Promise<PrestacaoServicoDBType[]> {
+        const [rows] = await db.execute<PrestacaoServicoDBType[] & RowDataPacket[]>("SELECT * FROM tbl_prestacao_servico")
 
         return rows
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<PrestacaoServicoDBType | null> {
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<
+                PrestacaoServicoDBType & RowDataPacket[]
+            >(
                 `SELECT * FROM tbl_prestacao_servico 
                 WHERE tbl_prestacao_servico.id = ?`,
 
@@ -54,14 +90,14 @@ export const PrestacaoServicoModel = {
             )
 
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] : null
+            return Array.isArray(rows) ? rows[0] as PrestacaoServicoDBType : null
         } catch (err) {
             console.log(err)
             return null
         }
     },
 
-    async update(id: string, prestacaoServico: PrestacaoServicoDBType) {
+    async update(id: string, prestacaoServico: PrestacaoServicoDBType): Promise<PrestacaoServicoDBType | null> {
         try {
             const [rows] = await db.execute(
                 `UPDATE tbl_prestacao_servico 
@@ -91,8 +127,8 @@ export const PrestacaoServicoModel = {
                     id
                 ]
             )
-            console.log({ rows })
-            return rows
+
+            return await this.get(id)
         } catch (err) {
             console.log(err)
             return null

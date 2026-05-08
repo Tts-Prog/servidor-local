@@ -92,7 +92,7 @@ export const typeDefs = gql`
         subtotal: Float,
         horas_estimadas: Int,
         id_prestador: Prestador,
-        id_servico: Servico,
+        servico: Servico,
         preco_hora: Float,
         estado: EstadoPrestacaoServico,
         id_orcamento: Orcamento,
@@ -149,7 +149,8 @@ export const typeDefs = gql`
 
     type Query {
         getCredentials: String
-
+        getAllPrestacoesServicos: [PrestacaoServico]
+        getPrestacaoServicoById(id: ID!): PrestacaoServico
         getAllUsers: [Utilizador]
         getUserById(id: ID!): Utilizador
         getAllServices: [Servico]
