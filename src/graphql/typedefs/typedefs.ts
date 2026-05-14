@@ -44,7 +44,7 @@ export const typeDefs = gql`
 
     type Proposta {
         id: ID!,
-        idPrestacaoServico: PrestacaoServico,
+        PrestacaoServico: PrestacaoServico,
         precoHora: Float!,
         horasEstimadas: Int!,
         estado: EstadoProposta,
@@ -101,6 +101,7 @@ export const typeDefs = gql`
         tipo_prestador: TipoPrestador,
         urgente: Boolean,
         enabled: Boolean,
+        proposta: Proposta,
         created_at: String,
         updated_at: String
     }           
@@ -149,7 +150,9 @@ export const typeDefs = gql`
 
     type Query {
         getCredentials: String
-        getAllPrestacoesServicos: [PrestacaoServico]
+        prestacaoServico(id: ID!): PrestacaoServico
+        prestacoesServicos: [PrestacaoServico]
+
         getPrestacaoServicoById(id: ID!): PrestacaoServico
         getAllUsers: [Utilizador]
         getUserById(id: ID!): Utilizador
@@ -207,6 +210,39 @@ export const typeDefs = gql`
             enabled: Boolean!
         ): Proposta
         deleteProposta(id: ID!): Proposta
+
+        createPrestacaoServico(
+            designacao: String!,
+            subtotal: Float!,
+            horas_estimadas: Int!,
+            id_prestador: ID!,
+            servico: ID!,
+            preco_hora: Float!,
+            estado: EstadoPrestacaoServico!,
+            id_orcamento: ID!,
+            id_utilizador: ID!,
+            id_empresa: ID!,
+            tipo_prestador: TipoPrestador!,
+            urgente: Boolean!,
+            enabled: Boolean!
+        ): PrestacaoServico
+        updatePrestacaoServico(
+            id: ID!,
+            designacao: String!,
+            subtotal: Float!,
+            horas_estimadas: Int!,
+            id_prestador: ID!,
+            servico: ID!,
+            preco_hora: Float!,
+            estado: EstadoPrestacaoServico!,
+            id_orcamento: ID!,
+            id_utilizador: ID!,
+            id_empresa: ID!,
+            tipo_prestador: TipoPrestador!,
+            urgente: Boolean!,
+            enabled: Boolean!
+        ): PrestacaoServico
+        deletePrestacaoServico(id: ID!): PrestacaoServico
     }
         
 

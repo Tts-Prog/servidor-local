@@ -74,7 +74,7 @@ export const PrestacaoServicoModel = {
 
     async getAll(): Promise<PrestacaoServicoDBType[]> {
         const [rows] = await db.execute<PrestacaoServicoDBType[] & RowDataPacket[]>("SELECT * FROM tbl_prestacao_servico")
-
+        console.log(rows)
         return rows
     },
 

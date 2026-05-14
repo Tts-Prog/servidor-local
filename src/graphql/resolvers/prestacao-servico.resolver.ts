@@ -1,4 +1,5 @@
 import { PrestacaoServicoModel } from "../../models/prestacao-servico.model.js";
+import { PropostaModel } from "../../models/proposta.model.js";
 import { ServiceModel } from "../../models/servico.model.js";
 import type { PrestacaoServicoDBType } from "../../utils/types.js";
 
@@ -62,6 +63,9 @@ export const prestacaoServicoResolver = {
         Servico: async (parent: { id: string }) => {
             return await ServiceModel.get(parent.id);
         },
+        Proposta: async (parent: { id: string }) => {
+            return await PropostaModel.get(parent.id);
+        }
 
     }
 };                                          

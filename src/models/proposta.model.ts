@@ -7,7 +7,7 @@ export const PropostaModel = {
     async create(proposta: PropostaDBType) {
         try {
             const [rows] = await db.execute(
-                `INSERT INTO tbl_propostas 
+                `INSERT INTO tbl_proposta 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 
                 [
@@ -30,7 +30,7 @@ export const PropostaModel = {
     },
 
     async getAll() {
-        const [rows] = await db.execute("SELECT * FROM tbl_propostas")
+        const [rows] = await db.execute("SELECT * FROM tbl_proposta")
 
         return rows
     },
@@ -48,7 +48,7 @@ export const PropostaModel = {
                 `SELECT DISTINCT 
                     pt.*, 
                     pr.id as owner 
-                FROM tbl_propostas pt
+                FROM tbl_proposta pt
                 INNER JOIN tbl_prestadores pr ON pt.id_prestador = pr.id
                 INNER JOIN tbl_utilizadores u ON pr.id_utilizador = u.id
                 WHERE pt.id = ?`,
@@ -67,7 +67,7 @@ export const PropostaModel = {
     async update(id: string, proposta: PropostaDBType) {
         try {
             const [rows] = await db.execute(
-                `UPDATE tbl_propostas 
+                `UPDATE tbl_proposta 
                 SET id_prestacao_servico = ?, 
                 preco_hora = ?, 
                 horas_estimadas = ?, 
@@ -97,7 +97,7 @@ export const PropostaModel = {
     async delete(id: string) {
         try {
             const rows: any = await db.execute(
-                `DELETE FROM tbl_propostas 
+                `DELETE FROM tbl_proposta 
                 WHERE id = ?`,
 
                 [id]
@@ -113,8 +113,8 @@ export const PropostaModel = {
     async getByPrestacaoServico(idPrestacaoServico: string): Promise<PropostaDBType[] | null> {
         try {
             const [rows] = await db.execute<PropostaDBType[] & RowDataPacket[]>(
-                `SELECT * FROM tbl_propostas 
-                WHERE tbl_propostas.id_prestacao_servico = ?`,
+                `SELECT * FROM tbl_proposta 
+                WHERE tbl_proposta.id_prestacao_servico = ?`,
 
                 [idPrestacaoServico]
             )
@@ -130,7 +130,7 @@ export const PropostaModel = {
     async acceptProposal(id: string) {
         try {
             const [rows] = await db.execute(
-                `UPDATE tbl_propostas 
+                `UPDATE tbl_proposta 
                 SET estado = ?, 
                 updated_at = ?
                 WHERE id = ?`,

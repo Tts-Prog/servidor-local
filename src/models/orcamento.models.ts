@@ -3,6 +3,14 @@ import db from "../lib/db.js"
 import type { OrcamentoDBType } from "../utils/types.js"
 import { generateUUID } from "../utils/uuid.js"
 
+interface insertResponse {
+    affectedRows: number;
+    fieldCount: number;
+    info: string;
+    insertId: number;
+    serverStatus: number;
+    warningStatus: number;
+}
 
 export const OrcamentoModel = {
     async create(orcamento: OrcamentoDBType): Promise<OrcamentoDBType | null> {
@@ -12,7 +20,7 @@ export const OrcamentoModel = {
                 VALUES (?, ?, ?, ?, ?, ?)`,
 
                 [
-                    generateUUID(),
+                    null,
                     orcamento.total,
                     orcamento.idUtilizadores,
                     orcamento.enabled,
@@ -21,7 +29,11 @@ export const OrcamentoModel = {
                 ]
             )
 
-            return rows as OrcamentoDBType
+            const [newOrcamento] = await db.execute<OrcamentoDBType[] & RowDataPacket[]>(
+                "SELECT * FROM tbl_orcamentos ORDER BY id DESC LIMIT 1"
+            )
+
+            return Array.isArray(newOrcamento) && newOrcamento.length > 0 ? newOrcamento[0] as OrcamentoDBType : null
         } catch (err) {
             console.log(err)
             return null
