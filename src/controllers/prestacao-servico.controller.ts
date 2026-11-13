@@ -1,5 +1,5 @@
 import type { Request, Response } from "express"
-import type { PrestacaoServicoDBType } from "../utils/types.js"
+import type { PrestacaoServicoByCategoriaType, PrestacaoServicoDBType, ResponseType } from "../utils/types.js"
 import { PrestacaoServicoModel } from "../models/prestacao-servico.model.js"
 
 export const PrestacaoServicoController = {
@@ -167,5 +167,44 @@ export const PrestacaoServicoController = {
             message: "Prestacoes de servico buscadas com sucesso",
             data: getAllPrestacaoServicosResponse
         })
+    },
+
+    async getAllPrestacaoServicoByCategoriaDetalhado(req: Request, res: Response) {
+        const { categoria } = req.params
+        const { limit, offset } = req.query as { limit: string, offset: string }
+
+        let LIMIT = 10
+        let OFFSET = 0
+
+        if (limit && parseInt(limit) > 0) LIMIT = parseInt(limit)
+        if (offset && parseInt(offset) > 0) OFFSET = parseInt(offset)
+
+        if (!categoria) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Categoria obrigatoria",
+                data: null
+            }
+            return res.status(400).json(response)
+        }
+
+        const getPrestacaoServicoByCategoriaDetalhadoResponse = await PrestacaoServicoModel.getAllPrestacaoServicoByCategoriaDetalhado(LIMIT, OFFSET, categoria as string)
+
+        if (!getPrestacaoServicoByCategoriaDetalhadoResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Prestacao de servico nao encontrada",
+                data: null
+            }
+            return res.status(404).json(response)
+        }
+
+        const response: ResponseType<PrestacaoServicoByCategoriaType[]> = {
+            status: "success",
+            message: "Prestacao de servico encontrada com sucesso",
+            data: getPrestacaoServicoByCategoriaDetalhadoResponse
+        }
+
+        return res.status(200).json(response)
     }
 }

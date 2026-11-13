@@ -84,6 +84,31 @@ components:
           type: boolean
           example: true
 
+    PrestacaoServicoByCategoria:
+      type: object
+      properties:
+        id_prestacao_servico:
+          type: string
+          example: "1"
+        descricao:
+          type: string
+          example: "Prestacao de servico"
+        nome_servico:
+          type: string
+          example: "Servico"
+        nome_categoria:
+          type: string
+          example: "Categoria"
+        icone_categoria:
+          type: string
+          example: "icone"
+        data_pedido:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+        urgente:
+          type: boolean
+          example: true
+
     UpdatePrestacaoServico:
       type: object
       properties:
